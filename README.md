@@ -4,7 +4,7 @@ This app aims to solve the problem of reading through long articles
 
 ## Getting Started
 
-##App Architecture 
+## App Architecture 
 The Architecture used is MVVM architecture with Serverless.
 
 ## Contribution Guide 
