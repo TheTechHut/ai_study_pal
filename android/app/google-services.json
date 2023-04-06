@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "259370708796",
+    "firebase_url": "https://ai-study-pal-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ai-study-pal",
+    "storage_bucket": "ai-study-pal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259370708796:android:6f07d2fbd449d389a2b839",
+        "android_client_info": {
+          "package_name": "com.example.summarize_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259370708796-85svumtsgeh8nc6svrer57q4cvuaea7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.summarize_app",
+            "certificate_hash": "4d5acc86659b2a44e24aa3c4fd970b085fb6f401"
+          }
+        },
+        {
+          "client_id": "259370708796-hb7ct2ul3alc279p3p0lbchghqu6fl0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJkKO7vmd2LJ2_kPkIOI_J-AbzEZ_8_NM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259370708796-hb7ct2ul3alc279p3p0lbchghqu6fl0i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "259370708796-7i22in18g3epme5tk7q01th2hmp0qblu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.summarizeApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
