@@ -35,7 +35,7 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  int _counter = 60;
+  int _counter = 20;
   late Timer _timer;
   final TextEditingController _codeController = TextEditingController();
   final FocusNode _otpFocusNode = FocusNode();

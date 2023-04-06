@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:summarize_app/views/core/homepage.dart';
 import 'package:summarize_app/views/onboarding/otp_view.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
@@ -82,14 +81,15 @@ class FirebaseAuthProvider extends ChangeNotifier {
       notifyListeners();
       void verificationCompleted(
           PhoneAuthCredential phoneAuthCredential) async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(userName: username),
-          ),
-        );
-        await _auth.signInWithCredential(phoneAuthCredential);
-        _prefs.setString(_prefsUsername, username);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => HomePage(userName: username),
+        //   ),
+        // );
+        // await _auth.signInWithCredential(phoneAuthCredential);
+        // _prefs.setString(_prefsUsername, username);
+        _status = Status.Authenticated;
         _isloading = false;
         notifyListeners();
       }
@@ -104,6 +104,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         _verificationId = verificationId;
         _resendToken = forceResendingToken;
         _phoneNumber = phoneNumber;
+        launchOTPActivity(verificationId, phoneNumber, context, username);
         notifyListeners();
       }
 
@@ -118,7 +119,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-        timeout: const Duration(minutes: 2),
+        timeout: const Duration(seconds: 20),
         forceResendingToken: _resendToken,
       );
       log(_verificationId);
