@@ -68,11 +68,11 @@ class FirebaseAuthProvider extends ChangeNotifier {
     );
   }
 
-  FirebaseAuthProvider() {
-    _isloading = true;
-    _errorMessage = '';
-    _prefs = SharedPreferences.getInstance() as SharedPreferences;
-  }
+  // FirebaseAuthProvider() {
+  //   _isloading = true;
+  //   _errorMessage = '';
+  //   //_prefs = SharedPreferences.getInstance() as SharedPreferences;
+  // }
 
   Future<void> createUser({
     required String phoneNumber,
@@ -199,7 +199,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
       _isloading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = "Unknown Error";
+      _errorMessage = "Unknown Error $e";
       _isloading = false;
       notifyListeners();
     }
