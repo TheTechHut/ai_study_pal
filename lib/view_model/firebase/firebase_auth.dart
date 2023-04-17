@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:summarize_app/const/app_colors.dart';
+import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/views/core/mainpage.dart';
 import 'package:summarize_app/views/onboarding/otp_view.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
@@ -44,13 +47,13 @@ class FirebaseAuthProvider extends ChangeNotifier {
   Future<void> readPrefs() async {
     await Future.delayed(const Duration(seconds: 3)).then(
       (v) async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        _isloggedIn = prefs.getBool(_prefsIsLoggedIN) ?? false;
+        _prefs = await SharedPreferences.getInstance();
+        _isloggedIn = _prefs.getBool(_prefsIsLoggedIN) ?? false;
         _isloading = true;
         if (_isloggedIn) {
           _user = _auth.currentUser;
           assert(_user != null);
-          _username = prefs.getString(_prefsUsername) ?? "";
+          _username = _prefs.getString(_prefsUsername) ?? "";
           log(_user!.displayName.toString());
           _status = Status.Authenticated;
           _isloading = false;
@@ -66,7 +69,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }
 
   FirebaseAuthProvider() {
-    _isloading = false;
+    _isloading = true;
     _errorMessage = '';
     _prefs = SharedPreferences.getInstance() as SharedPreferences;
   }
@@ -79,25 +82,35 @@ class FirebaseAuthProvider extends ChangeNotifier {
     try {
       _isloading = true;
       notifyListeners();
-      void verificationCompleted(
-          PhoneAuthCredential phoneAuthCredential) async {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => HomePage(userName: username),
-        //   ),
-        // );
-        // await _auth.signInWithCredential(phoneAuthCredential);
-        // _prefs.setString(_prefsUsername, username);
-        _status = Status.Authenticated;
-        _isloading = false;
-        notifyListeners();
+      verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
+        // Sign in (or link) the user with the auto-generated credential
+        _user = _auth.currentUser;
+        if (_user != null) {
+          try {
+            await _user!.linkWithCredential(phoneAuthCredential);
+            await _auth.signInWithCredential(phoneAuthCredential);
+            // User successfully linked with auto-generated credential
+            _isloading = false;
+            notifyListeners();
+          } on FirebaseAuthException catch (e) {
+            // Handle the exception here
+            _isloading = false;
+            notifyListeners();
+            log("Error $e");
+          }
+        }
       }
 
       void verificationFailed(FirebaseAuthException authException) {
         _errorMessage =
             'Phone number verification failed: ${authException.message}';
+        showToast(
+          "something went wrong, Please wait and try again later",
+          color: AppColor.kGrayErrorColor,
+        );
+        showErrorDialog(errorMessage, context);
         notifyListeners();
+        return;
       }
 
       void codeSent(String verificationId, [int? forceResendingToken]) async {
@@ -119,89 +132,20 @@ class FirebaseAuthProvider extends ChangeNotifier {
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-        timeout: const Duration(seconds: 20),
+        timeout: const Duration(minutes: 1),
         forceResendingToken: _resendToken,
       );
       log(_verificationId);
       _username = username;
+      _isloading = false;
       notifyListeners();
     } catch (e) {
       _errorMessage = 'An error occurred while verifying the phone number: $e';
       log(_verificationId);
+      _isloading = false;
       notifyListeners();
     }
   }
-
-  // Future<void> createUser(
-  //     String phoneNumber, BuildContext context, String username) async {
-  //   try {
-  //     _isloading = true;
-  //     notifyListeners();
-  //     verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
-  //       String code = phoneAuthCredential.smsCode!;
-  //       if (code.isNotEmpty) {
-  //         // await _auth.signInWithCredential(phoneAuthCredential).whenComplete(
-  //         //       () =>
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => HomePage(userName: username),
-  //           ),
-  //         );
-  //         //);
-  //         // final prefs = await SharedPreferences.getInstance();
-  //         // prefs.setString(_prefsUsername, username);
-  //         log(code);
-  //         notifyListeners();
-  //       }
-  //       // Notify listeners that the user has been signed in
-  //       //Automatic sign in
-  //       _isloading = false;
-  //       notifyListeners();
-  //     }
-
-  //     verificationFailed(FirebaseAuthException authException) {
-  //       _errorMessage =
-  //           'Phone number verification failed: ${authException.message}';
-  //       notifyListeners();
-  //     }
-
-  //     codeSent(String verificationId, [int? forceResendingToken]) async {
-  //       //Where I should launch the UI to enter verification code
-  //       //Automatic sign in has failed
-  //       //The resend token is null for IOS
-  //       //Enter the verification code and begin the authentication
-  //       //Make a phone credential object to sign in the user
-  //       _verificationId = verificationId;
-  //       _resendToken = forceResendingToken;
-  //       _phoneNumber = phoneNumber;
-  //       launchOTPActivity(verificationId, phoneNumber, context, username);
-  //       notifyListeners();
-  //     }
-
-  //     codeAutoRetrievalTimeout(String verificationId) {
-  //       _verificationId = verificationId;
-  //       notifyListeners();
-  //     }
-
-  //     await _auth.verifyPhoneNumber(
-  //       phoneNumber: phoneNumber,
-  //       verificationCompleted: verificationCompleted,
-  //       verificationFailed: verificationFailed,
-  //       codeSent: codeSent,
-  //       codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-  //       timeout: const Duration(minutes: 2),
-  //       forceResendingToken: _resendToken,
-  //     );
-  //     log(_verificationId);
-  //     _username = username;
-  //     notifyListeners();
-  //   } catch (e) {
-  //     _errorMessage = 'An error occurred while verifying the phone number: $e';
-  //     log(_verificationId);
-  //     notifyListeners();
-  //   }
-  // }
 
   launchOTPActivity(String verificationId, String phoneNumber,
           BuildContext context, String username) =>
@@ -233,19 +177,30 @@ class FirebaseAuthProvider extends ChangeNotifier {
       );
       final myUser = await _auth.signInWithCredential(credential);
       // Notify listeners that the user has been signed in
-      User currentUser = _auth.currentUser!;
-      assert(myUser.user!.uid == currentUser.uid);
-      await currentUser.updateDisplayName(_username);
-      await currentUser.updatePhoneNumber(credential);
+      _user = _auth.currentUser!;
+      assert(myUser.user!.uid == _user!.uid);
+      await _user!.updateDisplayName(_username);
+      await _user!.updatePhoneNumber(credential);
+      _username = _user!.displayName!;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool(_prefsIsLoggedIN, true);
-      prefs.setString(_prefsUsername, currentUser.displayName!);
+      prefs.setString(_prefsUsername, _username);
       _isloggedIn = true;
-      _isloading = false;
       _status = Status.Authenticated;
+      _isloading = false;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      if (e.code.isNotEmpty) {
+        log(e.code + e.message!);
+      } else {
+        _errorMessage =
+            'An error occurred while signing in the user with phone number: ${e.message}';
+      }
+      _isloading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = 'An error occurred while signing in: $e';
+      _errorMessage = "Unknown Error";
+      _isloading = false;
       notifyListeners();
     }
   }
@@ -273,11 +228,29 @@ class FirebaseAuthProvider extends ChangeNotifier {
         timeout: const Duration(seconds: 60),
         forceResendingToken: _resendToken,
       );
+      _isloading = false;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      _isloading = false;
+      if (e.code == "session-expired") {
+        //Proceed => Already logged in and probably an auth exception
+        //Drawbacks Any OTP works
+        //This is a work around
+        //Flip side the user session has been registered on firebase
+        notifyListeners();
+      } else {
+        _errorMessage =
+            'An error occurred while resending the verification code: ${e.message}';
+      }
       notifyListeners();
     } catch (e) {
-      _errorMessage =
-          'An error occurred while resending the verification code: $e';
+      _errorMessage = "Unknown Error";
+      _isloading = false;
       notifyListeners();
     }
+  }
+
+  signOut() async {
+    await _auth.signOut();
   }
 }

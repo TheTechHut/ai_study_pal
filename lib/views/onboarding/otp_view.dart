@@ -106,7 +106,7 @@ class _OtpScreenState extends State<OtpScreen> {
             },
             onCompleted: (value) async {
               // Handle completed OTP input
-              await otpProvider.signInWithPhoneNumber(value);
+              //await otpProvider.signInWithPhoneNumber(value);
             },
             appContext: context,
           ),
