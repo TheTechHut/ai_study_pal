@@ -39,10 +39,14 @@ class FirebaseAuthProvider extends ChangeNotifier {
   String get username => _username;
   String get errorMessage => _errorMessage;
   String get phoneNumber => _phoneNumber;
+  Stream<User?> get authState => _auth.authStateChanges();
+
   // This is an example of a named constructor
   FirebaseAuthProvider.initialize() {
     readPrefs();
   }
+
+  FirebaseAuthProvider();
 
   Future<void> readPrefs() async {
     await Future.delayed(const Duration(seconds: 3)).then(
@@ -251,6 +255,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }
 
   signOut() async {
+    await _prefs.setBool(_prefsIsLoggedIN, false);
     await _auth.signOut();
   }
 }
