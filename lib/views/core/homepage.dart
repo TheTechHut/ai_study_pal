@@ -264,15 +264,19 @@ class _DropDownState extends State<DropDown> {
         Consumer<SummaryProvider>(
           builder: (context, networkProvider, child) => ElevatedButton(
             onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MainPage(),
-                ),
-              );
-              await pdfProvider.readRandomPage(pageNumber: dropDownValue).then(
-                    (value) => networkProvider.getSummary(
+              await pdfProvider
+                  .readRandomPage(pageNumber: dropDownValue)
+                  .then(
+                    (value) async => await networkProvider.getSummary(
                         userInput: pdfProvider.myText),
+                  )
+                  .whenComplete(
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainPage(),
+                      ),
+                    ),
                   );
             },
             child: const Text('Summarize'),

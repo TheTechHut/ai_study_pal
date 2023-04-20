@@ -11,19 +11,10 @@ enum RequestType {
 }
 
 class NetworkService {
-  NetworkService(this._body);
-  Map<String, String> _headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer <API KEY>',
-  };
-  final Map<String, dynamic> _body;
-  Map<String, String> get getHeaders => _headers;
+  NetworkService({required this.body, required this.headers});
 
-  void setHeaders({required Map<String, String> headers}) {
-    _headers = headers;
-  }
-
-  Map<String, dynamic> get getBody => _body;
+  final Map<String, dynamic> body;
+  final Map<String, String> headers;
 
   static Future<http.Response>? _createRequest({
     required RequestType requestType,
@@ -46,9 +37,9 @@ class NetworkService {
     Map<String, String>? queryParam,
   }) async {
     try {
-      final header = _headers;
+      final header = headers;
       final url = NetworkHelper.concatUrlQP(url: uri, queryParam: queryParam);
-      final body = _body;
+      final body = this.body;
 
       final response = await _createRequest(
         requestType: requestType,
@@ -56,7 +47,6 @@ class NetworkService {
         headers: header,
         body: body,
       );
-
       return response;
     } catch (e) {
       log('Error - $e');

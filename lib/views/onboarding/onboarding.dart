@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:summarize_app/const/app_constant_imports.dart';
 import 'package:summarize_app/services/toast_service.dart';
-import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/core/homepage.dart';
-import 'package:summarize_app/views/splash/splash.dart';
+import 'package:summarize_app/views/onboarding/onboarding_two.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -18,9 +15,8 @@ class OnBoarding extends StatefulWidget {
 class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
-    final phoneAuthProvider = Provider.of<FirebaseAuthProvider>(context);
-    TextEditingController phoneNumber = TextEditingController();
     TextEditingController userName = TextEditingController();
+    final formKey = GlobalKey<FormState>();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -39,85 +35,41 @@ class _OnBoardingState extends State<OnBoarding> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                // Text(
-                //   'Study Pal',
-                //   style: AppTextStyle.heading1.copyWith(
-                //     color: AppColor.kSecondaryColor,
-                //   ),
-                // ),
-                AppTextField(
-                  controller: userName,
-                  hintText: 'Enter Username',
-                  labelText: 'Username',
-                  onSubmitted: (p0) {
-                    if (userName.text.isEmpty) {
-                      showToast("Username can't be empty");
-                    }
-                  },
-                ),
-
-                const Spacing.bigHeight(),
-                AppTextField(
-                  controller: phoneNumber,
-                  keyboardType: TextInputType.phone,
-                  hintText: 'Enter Phone Number',
-                  labelText: 'Phone Number',
-                  onSubmitted: (p0) {
-                    final regex = RegExp(r'^0[0-9]*$');
-                    if (phoneNumber.text.isEmpty) {
-                      showToast("Phone number is required");
-                    } else if ((!regex.hasMatch(phoneNumber.text)) &&
-                        phoneNumber.text.length != 10) {
-                      showToast("Please enter a valid phone number");
-                    }
-                  },
+                Form(
+                  key: formKey,
+                  child: AppTextField(
+                    controller: userName,
+                    hintText: 'Enter Username',
+                    labelText: 'Username',
+                    validator: (username) {
+                      if (userName.text.isEmpty) {
+                        return "username cant be empty";
+                      }
+                      if (userName.text.length < 3) {
+                        return "Username is too short";
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 const Spacing.bigHeight(),
                 AppElevatedButton(
-                  onPressed: () async {
-                    // SharedPreferences prefs =
-                    //     await SharedPreferences.getInstance();
-
-                    // prefs.setString("inputusername", userName.text);
-                    // prefs.setString("inputphone", phoneNumber.text);
-
-                    if (phoneNumber.text.isEmpty ||
-                        phoneNumber.text.length < 10) {
-                      showToast("Please Enter a phone number");
-                    } else if (phoneNumber.text.isNotEmpty &&
-                        userName.text.isNotEmpty) {
-                      await phoneAuthProvider.createUser(
-                        phoneNumber:
-                            phoneNumber.text.replaceFirst('0', '+254').trim(),
-                        context: context,
-                        username: userName.text,
-                      );
-                    } else if (phoneAuthProvider.errorMessage.isNotEmpty) {
-                      showToast("Oops Something went wrong");
-                      showErrorDialog(phoneAuthProvider.errorMessage);
-                    } else {
-                      showToast("Success");
-                      if (context.mounted) return;
+                  onPressed: () {
+                    // Add a click count error that tells a user to enter the phone number without country code
+                    //Add a country code feature
+                    if (formKey.currentState!.validate()) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => HomePage(
-                            userName: phoneAuthProvider.username,
-                          ),
+                          builder: (context) =>
+                              OnBoarding2(username: userName.text),
                         ),
                       );
-                    }
-                    if (phoneAuthProvider.isloading) {
-                      if (context.mounted) return;
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Splash(),
-                        ),
-                      );
+                      showToast("Success!", color: AppColor.kSecondaryColor);
                     }
                   },
-                  label: "Submit",
+                  label: "Next",
                   borderColor: AppColor.kPrimaryColor,
-                  isLoading: phoneAuthProvider.isloading,
+                  isLoading: false,
                 )
               ],
             ),
