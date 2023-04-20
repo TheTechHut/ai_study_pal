@@ -42,35 +42,37 @@ class FirebaseAuthProvider extends ChangeNotifier {
   Stream<User?> get authState => _auth.authStateChanges();
 
   // This is an example of a named constructor
-  FirebaseAuthProvider.initialize() {
-    readPrefs();
+  // FirebaseAuthProvider.initialize() {
+  //   readPrefs();
+  // }
+
+  FirebaseAuthProvider() {
+    log(_username);
   }
 
-  FirebaseAuthProvider();
+  // Future<void> readPrefs() async {
+  //   await Future.delayed(const Duration(seconds: 3)).then(
+  //     (v) async {
+  //       _prefs = await SharedPreferences.getInstance();
+  //       _isloggedIn = _prefs.getBool(_prefsIsLoggedIN) ?? false;
+  //       _isloading = true;
+  //       if (_isloggedIn) {
+  //         _user = _auth.currentUser;
+  //         assert(_user != null);
+  //         _username = _prefs.getString(_prefsUsername) ?? "";
+  //         log(_user!.displayName.toString());
+  //         _status = Status.Authenticated;
+  //         _isloading = false;
+  //         notifyListeners();
+  //         return;
+  //       }
 
-  Future<void> readPrefs() async {
-    await Future.delayed(const Duration(seconds: 3)).then(
-      (v) async {
-        _prefs = await SharedPreferences.getInstance();
-        _isloggedIn = _prefs.getBool(_prefsIsLoggedIN) ?? false;
-        _isloading = true;
-        if (_isloggedIn) {
-          _user = _auth.currentUser;
-          assert(_user != null);
-          _username = _prefs.getString(_prefsUsername) ?? "";
-          log(_user!.displayName.toString());
-          _status = Status.Authenticated;
-          _isloading = false;
-          notifyListeners();
-          return;
-        }
-
-        _status = Status.Unauthenticated;
-        _isloading = false;
-        notifyListeners();
-      },
-    );
-  }
+  //       _status = Status.Unauthenticated;
+  //       _isloading = false;
+  //       notifyListeners();
+  //     },
+  //   );
+  // }
 
   // FirebaseAuthProvider() {
   //   _isloading = true;
@@ -140,7 +142,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         forceResendingToken: _resendToken,
       );
       log(_verificationId);
-      _username = username;
+      //_username = _user!.displayName!;
       _isloading = false;
       notifyListeners();
     } catch (e) {
@@ -255,6 +257,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }
 
   signOut() async {
+    _prefs = await SharedPreferences.getInstance();
     await _prefs.setBool(_prefsIsLoggedIN, false);
     await _auth.signOut();
   }

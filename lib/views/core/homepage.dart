@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/const/app_constant_imports.dart';
 import 'package:summarize_app/const/user_header.dart';
+import 'package:summarize_app/services/analytics_service.dart';
 import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
 import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
 import 'package:summarize_app/views/core/mainpage.dart';
@@ -73,73 +75,80 @@ class HomePage extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              Container(
-                padding: const EdgeInsets.all(AppDimension.medium),
-                child: Column(
-                  children: [
-                    Consumer<SummaryProvider>(
-                      builder: (context, networkData, child) {
-                        return AppElevatedButton(
-                          onPressed: () async {
-                            if (pdfProvider.pdfDoc == null) {
-                              showToast("Please Upload a PDF");
-                            } else {
-                              showToast("Coming soon");
-                              // await networkData
-                              //     .getSummary(userInput: pdfProvider.myText)
-                              //     .then(
-                              //       (value) => Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //           builder: (context) => const MainPage(),
-                              //         ),
-                              //       ),
-                              //     );
-                            }
-                          },
-                          borderColor: AppColor.kPrimaryColor,
-                          isLoading: false,
-                          label: 'Summarize Whole Doc',
-                        );
-                      },
-                    ),
-                    const Spacing.meduimHeight(),
-                    AppElevatedButton(
-                      onPressed: () {
-                        if (pdfProvider.pdfDoc == null) {
-                          showToast("Please Upload a PDF");
-                        } else {
-                          openDialog(context);
-                        }
-                      },
-                      borderColor: AppColor.kPrimaryColor,
-                      isLoading: false,
-                      label: 'Summarize Page',
-                    ),
-                    const Spacing.meduimHeight(),
-                    AppElevatedButton(
-                      onPressed: () {
-                        showToast("Coming soon");
-                      },
-                      borderColor: AppColor.kPrimaryColor,
-                      isLoading: false,
-                      label: 'Generate Questions',
-                    ),
-                    const Spacing.meduimHeight(),
-                    AppElevatedButton(
-                      onPressed: () {
-                        showToast("What would you like the app to do?");
-                        if (!context.mounted) return;
-                        showImprovement(
-                          context,
-                          myfeature,
-                        );
-                      },
-                      borderColor: AppColor.kPrimaryColor,
-                      isLoading: false,
-                      label: 'Suggest Improvement',
-                    ),
-                  ],
+              Visibility(
+                visible: pdfProvider.pdfDoc != null,
+                child: Container(
+                  padding: const EdgeInsets.all(AppDimension.medium),
+                  child: Column(
+                    children: [
+                      // Consumer<SummaryProvider>(
+                      //   builder: (context, networkData, child) {
+                      //     return AppElevatedButton(
+                      //       onPressed: () async {
+                      //         if (pdfProvider.pdfDoc == null) {
+                      //           showToast("Please Upload a PDF");
+                      //         } else {
+                      //           showToast("Coming soon");
+                      //           // await networkData
+                      //           //     .getSummary(userInput: pdfProvider.myText)
+                      //           //     .then(
+                      //           //       (value) => Navigator.push(
+                      //           //         context,
+                      //           //         MaterialPageRoute(
+                      //           //           builder: (context) => const MainPage(),
+                      //           //         ),
+                      //           //       ),
+                      //           //     );
+                      //         }
+                      //       },
+                      //       borderColor: AppColor.kPrimaryColor,
+                      //       isLoading: false,
+                      //       label: 'Summarize Whole Doc',
+                      //     );
+                      //   },
+                      // ),
+                      //const Spacing.meduimHeight(),
+                      AppElevatedButton(
+                        onPressed: () {
+                          if (pdfProvider.pdfDoc == null) {
+                            showToast("Please Upload a PDF");
+                          } else {
+                            openDialog(context, false);
+                          }
+                        },
+                        borderColor: AppColor.kPrimaryColor,
+                        isLoading: false,
+                        label: 'Summarize Page',
+                      ),
+                      const Spacing.meduimHeight(),
+                      AppElevatedButton(
+                        onPressed: () {
+                          if (pdfProvider.pdfDoc == null) {
+                            showToast("Please Upload a PDF");
+                          } else {
+                            openDialog(context, true);
+                          }
+                        },
+                        borderColor: AppColor.kPrimaryColor,
+                        isLoading: false,
+                        label: 'Generate Questions',
+                      ),
+                      const Spacing.meduimHeight(),
+                      AppElevatedButton(
+                        onPressed: () {
+                          showToast("What would you like the app to do?");
+                          if (!context.mounted) return;
+                          showImprovement(
+                            context,
+                            myfeature,
+                          );
+                        },
+                        borderColor: AppColor.kPrimaryColor,
+                        isLoading: false,
+                        label: 'Suggest Improvement',
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -149,7 +158,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  openDialog(BuildContext context) => showDialog(
+  openDialog(BuildContext context, bool isQuestion) => showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -157,8 +166,10 @@ class HomePage extends StatelessWidget {
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                DropDown(),
+              children: [
+                DropDown(
+                  isQuestion: isQuestion,
+                ),
               ],
             ),
             elevation: 0,
@@ -224,7 +235,8 @@ class HomePage extends StatelessWidget {
 }
 
 class DropDown extends StatefulWidget {
-  const DropDown({super.key});
+  final bool isQuestion;
+  const DropDown({super.key, required this.isQuestion});
 
   @override
   State<DropDown> createState() => _DropDownState();
@@ -234,6 +246,7 @@ class _DropDownState extends State<DropDown> {
   int dropDownValue = 1;
   @override
   Widget build(BuildContext context) {
+    bool isQuestion = widget.isQuestion;
     final pdfProvider = Provider.of<PdfProvider>(context);
     List<DropdownMenuItem<int>> items = List.generate(
       pdfProvider.pdfDoc!.length + 1,
@@ -261,27 +274,61 @@ class _DropDownState extends State<DropDown> {
             value: dropDownValue,
           ),
         ),
-        Consumer<SummaryProvider>(
-          builder: (context, networkProvider, child) => ElevatedButton(
-            onPressed: () async {
-              await pdfProvider
-                  .readRandomPage(pageNumber: dropDownValue)
-                  .then(
-                    (value) async => await networkProvider.getSummary(
-                        userInput: pdfProvider.myText),
-                  )
-                  .whenComplete(
-                    () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainPage(),
-                      ),
-                    ),
-                  );
-            },
-            child: const Text('Summarize'),
-          ),
-        )
+        isQuestion
+            ? Consumer<QuestionsProvider>(
+                builder: (context, networkProvider, child) => ElevatedButton(
+                  onPressed: () async {
+                    await pdfProvider
+                        .readRandomPage(pageNumber: dropDownValue)
+                        .then(
+                          (value) async => await networkProvider.getQuestion(
+                            userInput: pdfProvider.myText,
+                          ),
+                        )
+                        .whenComplete(
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainPage(
+                                isQuestion: true,
+                              ),
+                              settings:
+                                  const RouteSettings(name: "main_page_nav"),
+                            ),
+                          ),
+                        );
+                    AnalyticsService.logSummaryEvent(true);
+                  },
+                  child: const Text('Generate Question'),
+                ),
+              )
+            : Consumer<SummaryProvider>(
+                builder: (context, networkProvider, child) => ElevatedButton(
+                  onPressed: () async {
+                    await pdfProvider
+                        .readRandomPage(pageNumber: dropDownValue)
+                        .then(
+                          (value) async => await networkProvider.getSummary(
+                            userInput: pdfProvider.myText,
+                          ),
+                        )
+                        .whenComplete(
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainPage(
+                                isQuestion: false,
+                              ),
+                              settings:
+                                  const RouteSettings(name: "main_page_nav"),
+                            ),
+                          ),
+                        );
+                    AnalyticsService.logSummaryEvent(true);
+                  },
+                  child: const Text('Summarize'),
+                ),
+              )
         //DropdownButton(items: , onChanged: (int items){pdfProvider.pdfDoc.pageAt(items)}),
       ],
     );
