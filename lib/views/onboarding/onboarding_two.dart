@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,17 +74,20 @@ class _OnBoardingState2 extends State<OnBoarding2> {
                         builder: (context, phoneAuthProvider, child) {
                           return AppElevatedButton(
                             onPressed: () async {
-                              log(formKey.currentState!.validate().toString());
                               if (formKey.currentState!.validate()) {
                                 if (phoneNumber.text.isNotEmpty &&
                                     userName.text.isNotEmpty) {
-                                  await phoneAuthProvider.createUser(
-                                    phoneNumber: phoneNumber.text
-                                        .replaceFirst('0', '+254')
-                                        .trim(),
-                                    context: context,
-                                    username: userName.text,
-                                  );
+                                  await phoneAuthProvider
+                                      .createUser(
+                                        phoneNumber: phoneNumber.text
+                                            .replaceFirst('0', '+254')
+                                            .trim(),
+                                        context: context,
+                                        username: userName.text,
+                                      )
+                                      .then(
+                                        (value) => Navigator.of(context).pop(),
+                                      );
                                 }
                                 if (phoneAuthProvider.isloading) {
                                   if (context.mounted) {

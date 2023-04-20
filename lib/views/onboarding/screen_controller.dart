@@ -15,15 +15,15 @@ class ScreenController extends StatelessWidget {
         return StreamBuilder(
           stream: authProvider.authState,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (authProvider.status == Status.Uninitialized) {
-              return const Splash();
-            }
+            //change this
+            //Provider to change Status to un initialized
+
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Splash();
             }
             if (snapshot.hasData) {
               return HomePage(
-                userName: authProvider.username,
+                userName: authProvider.user.displayName!,
               );
             } else {
               return const OnBoarding();

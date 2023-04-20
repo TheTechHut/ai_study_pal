@@ -2,9 +2,9 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:summarize_app/const/app_colors.dart';
 import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/views/core/homepage.dart';
 import 'package:summarize_app/views/core/mainpage.dart';
 import 'package:summarize_app/views/onboarding/otp_view.dart';
 
@@ -12,19 +12,14 @@ enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
 class FirebaseAuthProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
-  //Shared Preferences variable
-  final String _prefsIsLoggedIN = "isLoggedIn";
-  final String _prefsUsername = "USERNAME";
-  late SharedPreferences _prefs;
+
   //Widget variable
   String _username = "";
 
   //Control variable
-  bool _isloggedIn = false;
   bool _isloading = false;
 
   //FirebaseAuth variable
-  User? _user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _verificationId = "";
   int? _resendToken;
@@ -33,50 +28,21 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
   //getters
   Status get status => _status;
-  bool get isloggedIn => _isloggedIn;
   bool get isloading => _isloading;
-  User get user => _user!;
-  String get username => _username;
+  User get user => _auth.currentUser!;
+  String get username => user.displayName!;
   String get errorMessage => _errorMessage;
   String get phoneNumber => _phoneNumber;
   Stream<User?> get authState => _auth.authStateChanges();
 
   // This is an example of a named constructor
-  FirebaseAuthProvider.initialize() {
-    readPrefs();
-  }
-
-  FirebaseAuthProvider();
-
-  Future<void> readPrefs() async {
-    await Future.delayed(const Duration(seconds: 3)).then(
-      (v) async {
-        _prefs = await SharedPreferences.getInstance();
-        _isloggedIn = _prefs.getBool(_prefsIsLoggedIN) ?? false;
-        _isloading = true;
-        if (_isloggedIn) {
-          _user = _auth.currentUser;
-          assert(_user != null);
-          _username = _prefs.getString(_prefsUsername) ?? "";
-          log(_user!.displayName.toString());
-          _status = Status.Authenticated;
-          _isloading = false;
-          notifyListeners();
-          return;
-        }
-
-        _status = Status.Unauthenticated;
-        _isloading = false;
-        notifyListeners();
-      },
-    );
-  }
-
-  // FirebaseAuthProvider() {
-  //   _isloading = true;
-  //   _errorMessage = '';
-  //   //_prefs = SharedPreferences.getInstance() as SharedPreferences;
+  // FirebaseAuthProvider.initialize() {
+  //   readPrefs();
   // }
+
+  FirebaseAuthProvider() {
+    log(_username);
+  }
 
   Future<void> createUser({
     required String phoneNumber,
@@ -85,24 +51,18 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }) async {
     try {
       _isloading = true;
+      _username = username;
       notifyListeners();
-      verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
+      void verificationCompleted(PhoneAuthCredential phoneAuthCredential) {
         // Sign in (or link) the user with the auto-generated credential
-        _user = _auth.currentUser;
-        if (_user != null) {
-          try {
-            await _user!.linkWithCredential(phoneAuthCredential);
-            await _auth.signInWithCredential(phoneAuthCredential);
-            // User successfully linked with auto-generated credential
-            _isloading = false;
-            notifyListeners();
-          } on FirebaseAuthException catch (e) {
-            // Handle the exception here
-            _isloading = false;
-            notifyListeners();
-            log("Error $e");
-          }
-        }
+        log("Auto Verify");
+        _isloading = false;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomePage(userName: _username),
+          ),
+        );
+        notifyListeners();
       }
 
       void verificationFailed(FirebaseAuthException authException) {
@@ -122,6 +82,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         _resendToken = forceResendingToken;
         _phoneNumber = phoneNumber;
         launchOTPActivity(verificationId, phoneNumber, context, username);
+        log("code sent");
         notifyListeners();
       }
 
@@ -139,8 +100,6 @@ class FirebaseAuthProvider extends ChangeNotifier {
         timeout: const Duration(minutes: 1),
         forceResendingToken: _resendToken,
       );
-      log(_verificationId);
-      _username = username;
       _isloading = false;
       notifyListeners();
     } catch (e) {
@@ -158,9 +117,10 @@ class FirebaseAuthProvider extends ChangeNotifier {
         isDismissible: false,
         context: context,
         builder: (context) {
-          final MediaQueryData mediaQueryData = MediaQuery.of(context);
           return Padding(
-            padding: EdgeInsets.only(bottom: mediaQueryData.viewInsets.bottom),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: Container(
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.all(16),
@@ -181,15 +141,12 @@ class FirebaseAuthProvider extends ChangeNotifier {
       );
       final myUser = await _auth.signInWithCredential(credential);
       // Notify listeners that the user has been signed in
-      _user = _auth.currentUser!;
-      assert(myUser.user!.uid == _user!.uid);
-      await _user!.updateDisplayName(_username);
-      await _user!.updatePhoneNumber(credential);
-      _username = _user!.displayName!;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool(_prefsIsLoggedIN, true);
-      prefs.setString(_prefsUsername, _username);
-      _isloggedIn = true;
+      User user = _auth.currentUser!;
+      assert(myUser.user!.uid == user.uid);
+      await user.updateDisplayName(_username);
+      await user.updatePhoneNumber(credential);
+      _username = user.displayName!;
+      log(_username);
       _status = Status.Authenticated;
       _isloading = false;
       notifyListeners();
@@ -255,7 +212,6 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }
 
   signOut() async {
-    await _prefs.setBool(_prefsIsLoggedIN, false);
     await _auth.signOut();
   }
 }
