@@ -125,24 +125,25 @@ class _OtpScreenState extends State<OtpScreen> {
                 : () async {
                     await otpProvider
                         .signInWithPhoneNumber(_codeController.text)
-                        .whenComplete(() {
-                      if (otpProvider.errorMessage.isEmpty) {
-                        showToast("Success");
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(
-                              userName: widget.userName,
+                        .whenComplete(
+                      () {
+                        if (otpProvider.errorMessage.isEmpty) {
+                          showToast("Success");
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(userName: widget.userName),
                             ),
-                          ),
-                        );
-                      } else {
-                        showToast(
-                          "Oops something went wrong. You can report the error or try again",
-                        );
-                        showErrorDialog(otpProvider.errorMessage, context);
-                      }
-                    });
+                          );
+                        } else {
+                          showToast(
+                            "Oops something went wrong. You can report the error or try again",
+                          );
+                          showErrorDialog(otpProvider.errorMessage, context);
+                        }
+                      },
+                    );
                   },
             child: _isloading
                 ? const CircularProgressIndicator()

@@ -54,7 +54,7 @@ class UserHeader extends StatelessWidget {
                   radius: 35,
                   backgroundColor: AppColor.kSecondaryColor,
                   child: Text(
-                    authState.username.substring(0),
+                    authState.username,
                     style: AppTextStyle.heading3,
                   ),
                   //child: Image.asset(''),

@@ -23,7 +23,7 @@ class ScreenController extends StatelessWidget {
             }
             if (snapshot.hasData) {
               return HomePage(
-                userName: authProvider.username,
+                userName: authProvider.user.displayName!,
               );
             } else {
               return const OnBoarding();

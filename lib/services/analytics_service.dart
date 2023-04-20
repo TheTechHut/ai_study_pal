@@ -10,7 +10,7 @@ class AnalyticsService {
 
   static logGenQuestionEvent(bool isAsked) async {
     await _analytics.logEvent(name: "summarized_file", parameters: {
-      'summarized': isAsked,
+      'asked_question': isAsked,
     });
   }
 
