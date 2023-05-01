@@ -1,22 +1,22 @@
+import 'package:flutter/material.dart';
+
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:summarize_app/const/api_url.dart';
 import 'package:summarize_app/model/summary_model.dart';
 import 'package:summarize_app/services/network_helper.dart';
 import 'package:summarize_app/services/network_service.dart';
 import 'package:summarize_app/services/toast_service.dart';
 
-class SummaryProvider extends ChangeNotifier {
+class QuestionsProvider extends ChangeNotifier {
   SummaryModel result = SummaryModel();
   bool hasError = false;
   String errorMessage = "";
-  Future<SummaryModel?> getSummary({required String userInput}) async {
+  Future<SummaryModel?> getQuestion({required String userInput}) async {
     final response = await NetworkService(
       body: {
         "model": AppUrl.model,
-        "prompt":
-            "What are the key takeaways in the following article :$userInput",
+        "prompt": "Generate 5 relevant questions from :$userInput",
         "temperature": 0.7,
         "max_tokens": 64,
         "top_p": 1.0,

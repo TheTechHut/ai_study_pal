@@ -8,15 +8,12 @@ import 'package:summarize_app/const/user_header.dart';
 import 'package:summarize_app/services/toast_service.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
-import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MainPage extends StatelessWidget {
-  final bool isQuestion;
-  const MainPage({
+class QuestionsPage extends StatelessWidget {
+  const QuestionsPage({
     super.key,
-    required this.isQuestion,
   });
 
   @override
@@ -59,69 +56,40 @@ class MainPage extends StatelessWidget {
                 ),
               ),
               Text(
-                isQuestion ? "Your questions" : "Your Summary",
+                "Your Summary",
                 style: AppTextStyle.heading3,
               ),
               Container(
                 padding: const EdgeInsets.all(15),
                 margin: const EdgeInsets.all(15),
-                child: isQuestion
-                    ? Consumer<QuestionsProvider>(
-                        builder: (context, value, child) {
-                          if (value.result.choices!.isNotEmpty) {
-                            return SingleChildScrollView(
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Text(
-                                    value.result.choices!.first.text.toString(),
-                                    style: AppTextStyle.summaryText,
-                                  ),
-                                ),
-                              ),
-                            );
-                          } else if (value.hasError) {
-                            return Row(
-                              children: [
-                                const Icon(Icons.error),
-                                showErrorDialog(value.errorMessage, context),
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      )
-                    : Consumer<SummaryProvider>(
-                        builder: (context, value, child) {
-                          if (value.result.choices!.isNotEmpty) {
-                            return SingleChildScrollView(
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Text(
-                                    value.result.choices!.first.text.toString(),
-                                    style: AppTextStyle.summaryText,
-                                  ),
-                                ),
-                              ),
-                            );
-                          } else if (value.hasError) {
-                            return Row(
-                              children: [
-                                const Icon(Icons.error),
-                                showErrorDialog(value.errorMessage, context),
-                              ],
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      ),
+                child: Consumer<QuestionsProvider>(
+                  builder: (context, value, child) {
+                    if (value.result.choices!.isNotEmpty) {
+                      return SingleChildScrollView(
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Text(
+                              value.result.choices!.first.text.toString(),
+                              style: AppTextStyle.summaryText,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (value.hasError) {
+                      return Row(
+                        children: [
+                          const Icon(Icons.error),
+                          showErrorDialog(value.errorMessage, context),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),

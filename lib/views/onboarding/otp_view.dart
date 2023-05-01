@@ -35,7 +35,7 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  int _counter = 60;
+  int _counter = 20;
   late Timer _timer;
   final TextEditingController _codeController = TextEditingController();
   final FocusNode _otpFocusNode = FocusNode();
@@ -106,7 +106,7 @@ class _OtpScreenState extends State<OtpScreen> {
             },
             onCompleted: (value) async {
               // Handle completed OTP input
-              await otpProvider.signInWithPhoneNumber(value);
+              //await otpProvider.signInWithPhoneNumber(value);
             },
             appContext: context,
           ),
@@ -125,24 +125,25 @@ class _OtpScreenState extends State<OtpScreen> {
                 : () async {
                     await otpProvider
                         .signInWithPhoneNumber(_codeController.text)
-                        .whenComplete(() {
-                      if (otpProvider.errorMessage.isEmpty) {
-                        showToast("Success");
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(
-                              userName: widget.userName,
+                        .whenComplete(
+                      () {
+                        if (otpProvider.errorMessage.isEmpty) {
+                          showToast("Success");
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(userName: widget.userName),
                             ),
-                          ),
-                        );
-                      } else {
-                        showToast(
-                          "Oops something went wrong. You can report the error or try again",
-                        );
-                        showErrorDialog(otpProvider.errorMessage, context);
-                      }
-                    });
+                          );
+                        } else {
+                          showToast(
+                            "Oops something went wrong. You can report the error or try again",
+                          );
+                          showErrorDialog(otpProvider.errorMessage, context);
+                        }
+                      },
+                    );
                   },
             child: _isloading
                 ? const CircularProgressIndicator()
