@@ -77,17 +77,13 @@ class _OnBoardingState2 extends State<OnBoarding2> {
                               if (formKey.currentState!.validate()) {
                                 if (phoneNumber.text.isNotEmpty &&
                                     userName.text.isNotEmpty) {
-                                  await phoneAuthProvider
-                                      .createUser(
-                                        phoneNumber: phoneNumber.text
-                                            .replaceFirst('0', '+254')
-                                            .trim(),
-                                        context: context,
-                                        username: userName.text,
-                                      )
-                                      .then(
-                                        (value) => Navigator.of(context).pop(),
-                                      );
+                                  await phoneAuthProvider.createUser(
+                                    phoneNumber: phoneNumber.text
+                                        .replaceFirst('0', '+254')
+                                        .trim(),
+                                    context: context,
+                                    username: userName.text,
+                                  );
                                 }
                                 if (phoneAuthProvider.isloading) {
                                   if (context.mounted) {

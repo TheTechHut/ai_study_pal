@@ -17,11 +17,11 @@ class SummaryProvider extends ChangeNotifier {
         "model": AppUrl.model,
         "prompt":
             "What are the key takeaways in the following article :$userInput",
-        "temperature": 0.7,
-        "max_tokens": 64,
+        "temperature": 0.4,
+        "max_tokens": 500,
         "top_p": 1.0,
         "frequency_penalty": 0.0,
-        "presence_penalty": 0.0
+        "presence_penalty": 0.6
       },
       headers: AppUrl.gptHeaders,
     ).sendRequest(
