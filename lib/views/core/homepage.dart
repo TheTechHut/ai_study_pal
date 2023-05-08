@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/const/app_constant_imports.dart';
@@ -31,83 +30,55 @@ class HomePage extends StatelessWidget {
               const SizedBox(
                 height: 48,
               ),
-              UserHeader(
-                message: "Welcome $userName",
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.upload),
-                    onPressed: () async {
-                      await pdfProvider.pickPDFText();
-                      await pdfProvider.readWholeDoc();
-                    },
-                  ),
-                ],
-              ),
-              Text(
-                'Upload your PDF',
-                style: AppTextStyle.body4,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  pdfProvider.pdfDoc == null
-                      ? "Pick a new PDF document and wait for it to load..."
-                      : "PDF document loaded, ${pdfProvider.pdfDoc!.length} pages\n",
-                  style: const TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
+              Visibility(
+                visible: pdfProvider.pdfDoc == null,
+                child: Column(
+                  children: [
+                    UserHeader(
+                      message: "Welcome $userName",
+                    ),
+                    const SizedBox(
+                      height: 120,
+                    ),
+                  ],
                 ),
               ),
-              // Container(
-              //   constraints: const BoxConstraints(
-              //       maxHeight: 300, maxWidth: double.infinity),
-              //   margin: const EdgeInsets.all(15),
-              //   padding: const EdgeInsets.all(15),
-              //   child: SingleChildScrollView(
-              //     child: Card(
-              //       child: Text(pdfProvider.myText),
-              //     ),
-              //   ),
-              // ),
+              Visibility(
+                visible: pdfProvider.pdfDoc != null,
+                child: Column(children: [
+                  Text(
+                    "Your document",
+                    style: AppTextStyle.heading3,
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.4,
+                      minHeight: MediaQuery.of(context).size.width * 0.4,
+                    ),
+                    margin: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: SingleChildScrollView(
+                          child: Text(
+                            pdfProvider.myText,
+                            style: AppTextStyle.body6,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
               Visibility(
                 visible: pdfProvider.pdfDoc != null,
                 child: Container(
                   padding: const EdgeInsets.all(AppDimension.medium),
                   child: Column(
                     children: [
-                      // Consumer<SummaryProvider>(
-                      //   builder: (context, networkData, child) {
-                      //     return AppElevatedButton(
-                      //       onPressed: () async {
-                      //         if (pdfProvider.pdfDoc == null) {
-                      //           showToast("Please Upload a PDF");
-                      //         } else {
-                      //           showToast("Coming soon");
-                      //           // await networkData
-                      //           //     .getSummary(userInput: pdfProvider.myText)
-                      //           //     .then(
-                      //           //       (value) => Navigator.push(
-                      //           //         context,
-                      //           //         MaterialPageRoute(
-                      //           //           builder: (context) => const MainPage(),
-                      //           //         ),
-                      //           //       ),
-                      //           //     );
-                      //         }
-                      //       },
-                      //       borderColor: AppColor.kPrimaryColor,
-                      //       isLoading: false,
-                      //       label: 'Summarize Whole Doc',
-                      //     );
-                      //   },
-                      // ),
-                      //const Spacing.meduimHeight(),
                       AppElevatedButton(
                         onPressed: () {
                           if (pdfProvider.pdfDoc == null) {
@@ -150,7 +121,63 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Visibility(
+                visible: pdfProvider.pdfDoc == null,
+                replacement: Column(
+                  children: [
+                    Text(
+                      pdfProvider.pdfDoc == null
+                          ? "Pick a new PDF document and wait for it to load..."
+                          : "PDF document loaded, ${pdfProvider.pdfDoc!.length} pages\n",
+                      style: const TextStyle(fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.upload),
+                      onPressed: () async {
+                        await pdfProvider.pickPDFText();
+                        await pdfProvider.readWholeDoc();
+                      },
+                    ),
+                    Text(
+                      'Upload a different',
+                      style: AppTextStyle.body4,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.upload),
+                          onPressed: () async {
+                            await pdfProvider.pickPDFText();
+                            await pdfProvider.readWholeDoc();
+                          },
+                        ),
+                        Text(
+                          'Upload your PDF',
+                          style: AppTextStyle.body4,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Text(
+                            pdfProvider.pdfDoc == null
+                                ? "Pick a new PDF document and wait for it to load..."
+                                : "PDF document loaded, ${pdfProvider.pdfDoc!.length} pages\n",
+                            style: const TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -297,7 +324,7 @@ class _DropDownState extends State<DropDown> {
                             ),
                           ),
                         );
-                    AnalyticsService.logSummaryEvent(true);
+                    AnalyticsService.logGenQuestionEvent(true);
                   },
                   child: const Text('Generate Question'),
                 ),

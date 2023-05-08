@@ -18,7 +18,7 @@ class QuestionsProvider extends ChangeNotifier {
         "model": AppUrl.model,
         "prompt": "Generate 5 relevant questions from :$userInput",
         "temperature": 0.7,
-        "max_tokens": 64,
+        "max_tokens": 500,
         "top_p": 1.0,
         "frequency_penalty": 0.0,
         "presence_penalty": 0.0
