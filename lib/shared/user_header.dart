@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
-import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/shared/app_constant_imports.dart';
+import 'package:summarize_app/services/toast/toast_service.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/onboarding/onboarding.dart';
+import 'package:summarize_app/views/pages/onboarding/onboarding.dart';
 
 class UserHeader extends StatelessWidget {
   final String message;

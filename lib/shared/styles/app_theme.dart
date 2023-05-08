@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
+import 'package:summarize_app/shared/app_constant_imports.dart';
 
 ThemeData themeLight = ThemeData(
   scaffoldBackgroundColor: AppColor.kGrayNeutralColor.shade100,
