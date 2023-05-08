@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/const/app_text_style.dart';
-import 'package:summarize_app/const/spacing.dart';
-import 'package:summarize_app/const/user_header.dart';
-import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/shared/styles/app_text_style.dart';
+import 'package:summarize_app/shared/widgets/spacing.dart';
+import 'package:summarize_app/shared/widgets/user_header.dart';
+import 'package:summarize_app/services/toast/toast_service.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';

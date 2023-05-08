@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
-import 'package:summarize_app/const/user_header.dart';
-import 'package:summarize_app/services/analytics_service.dart';
-import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/shared/app_constant_imports.dart';
+import 'package:summarize_app/shared/widgets/user_header.dart';
+import 'package:summarize_app/services/analytics/analytics_service.dart';
+import 'package:summarize_app/services/toast/toast_service.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
 import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
-import 'package:summarize_app/views/core/mainpage.dart';
+import 'package:summarize_app/views/pages/actions/mainpage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:summarize_app/services/network_helper.dart';
-import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/services/network/network_helper.dart';
+import 'package:summarize_app/services/toast/toast_service.dart';
 
 enum RequestType {
   post,

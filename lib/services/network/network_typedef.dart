@@ -1,4 +1,4 @@
-import 'package:summarize_app/services/network_enums.dart';
+import 'package:summarize_app/services/network/network_enums.dart';
 
 typedef NetworkCallBack<R> = R Function(dynamic);
 typedef NetworkOnFailureCallBackWithMessage<R> = R Function(

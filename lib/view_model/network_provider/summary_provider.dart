@@ -1,11 +1,11 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/api_url.dart';
-import 'package:summarize_app/model/summary_model.dart';
-import 'package:summarize_app/services/network_helper.dart';
-import 'package:summarize_app/services/network_service.dart';
-import 'package:summarize_app/services/toast_service.dart';
+import 'package:summarize_app/shared/components/api_url.dart';
+import 'package:summarize_app/model/openai/openai_model.dart';
+import 'package:summarize_app/services/network/network_helper.dart';
+import 'package:summarize_app/services/network/network_service.dart';
+import 'package:summarize_app/services/toast/toast_service.dart';
 
 class SummaryProvider extends ChangeNotifier {
   SummaryModel result = SummaryModel();

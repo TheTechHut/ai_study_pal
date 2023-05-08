@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/firebase_options.dart';
-import 'package:summarize_app/services/analytics_service.dart';
+import 'package:summarize_app/services/analytics/analytics_service.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
 import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
-import 'package:summarize_app/views/onboarding/screen_controller.dart';
+import 'package:summarize_app/views/pages/onboarding/screen_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
