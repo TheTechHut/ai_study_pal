@@ -17,16 +17,16 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -49,6 +49,17 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCE7fHCzkXfEtsDIi462lafDFuDLiwaypQ',
+    appId: '1:259370708796:web:e444fbb73e8cbf1aa2b839',
+    messagingSenderId: '259370708796',
+    projectId: 'ai-study-pal',
+    authDomain: 'ai-study-pal.firebaseapp.com',
+    databaseURL: 'https://ai-study-pal-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'ai-study-pal.appspot.com',
+    measurementId: 'G-DCXW68133V',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAJkKO7vmd2LJ2_kPkIOI_J-AbzEZ_8_NM',
     appId: '1:259370708796:android:6f07d2fbd449d389a2b839',
@@ -56,17 +67,5 @@ class DefaultFirebaseOptions {
     projectId: 'ai-study-pal',
     databaseURL: 'https://ai-study-pal-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'ai-study-pal.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD2tHuFcA4p7kngd8QtDCGHTn2BzlvB88o',
-    appId: '1:259370708796:ios:ebf70f596d7ed92ba2b839',
-    messagingSenderId: '259370708796',
-    projectId: 'ai-study-pal',
-    databaseURL: 'https://ai-study-pal-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'ai-study-pal.appspot.com',
-    androidClientId: '259370708796-85svumtsgeh8nc6svrer57q4cvuaea7i.apps.googleusercontent.com',
-    iosClientId: '259370708796-7i22in18g3epme5tk7q01th2hmp0qblu.apps.googleusercontent.com',
-    iosBundleId: 'com.example.summarizeApp',
   );
 }

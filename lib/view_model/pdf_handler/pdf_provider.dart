@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pdf_text/pdf_text.dart';
@@ -5,12 +7,30 @@ import 'package:pdf_text/pdf_text.dart';
 class PdfProvider extends ChangeNotifier {
   PDFDoc? pdfDoc;
   String myText = "";
+  FilePickerResult? result;
 
   Future pickPDFText() async {
-    var filePickerResult = await FilePicker.platform.pickFiles();
-    if (filePickerResult != null) {
-      pdfDoc = await PDFDoc.fromPath(filePickerResult.files.single.path!);
-      notifyListeners();
+    try {
+      result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'jpg', 'png', 'doc'],
+      );
+      if (result != null) {
+        pdfDoc = await PDFDoc.fromPath(result!.files.single.path!);
+      }
+    } catch (e) {
+      log("$e");
+    }
+
+    if (result != null) {
+      try {
+        Uint8List uploadfile = result!.files.single.bytes!;
+        pdfDoc = await PDFDoc.fromPath(result!.files.single.path!);
+        log(uploadfile.length.toString());
+        notifyListeners();
+      } catch (e) {
+        log("$e");
+      }
     }
   }
 

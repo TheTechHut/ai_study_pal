@@ -73,7 +73,7 @@ class MainPage extends StatelessWidget {
                       )
                     : Consumer<SummaryProvider>(
                         builder: (context, value, child) {
-                          if (value.result.choices!.isNotEmpty) {
+                          if (value.result.choices != null) {
                             return SingleChildScrollView(
                               child: Card(
                                 child: Padding(
