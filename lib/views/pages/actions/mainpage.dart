@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/shared/styles/app_text_style.dart';
@@ -45,7 +44,7 @@ class MainPage extends StatelessWidget {
                 child: isQuestion
                     ? Consumer<QuestionsProvider>(
                         builder: (context, value, child) {
-                          if (value.result.choices!.isNotEmpty) {
+                          if (value.result.choices != null) {
                             return SingleChildScrollView(
                               child: Card(
                                 child: Padding(

@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:summarize_app/services/image_recognition/image_detect.dart';
 import 'package:summarize_app/shared/components/api_url.dart';
 import 'package:summarize_app/model/openai/openai_model.dart';
 import 'package:summarize_app/services/network/network_helper.dart';
@@ -13,7 +12,6 @@ class SummaryProvider extends ChangeNotifier {
   bool hasError = false;
   String errorMessage = "";
   Future<SummaryModel?> getSummary({required String userInput}) async {
-    ImageDetector().recognizeText();
     final response = await NetworkService(
       body: {
         "model": AppUrl.model,
