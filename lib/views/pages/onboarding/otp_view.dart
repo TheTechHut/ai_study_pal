@@ -5,9 +5,9 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/shared/app_constant_imports.dart';
 import 'package:summarize_app/services/toast/toast_service.dart';
+import 'package:summarize_app/shared/functions/app_error_dialog.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/views/pages/home/homepage.dart';
-import 'package:summarize_app/views/pages/actions/mainpage.dart';
 
 class OTPView extends StatelessWidget {
   final String phoneNumber;
@@ -140,7 +140,10 @@ class _OtpScreenState extends State<OtpScreen> {
                           showToast(
                             "Oops something went wrong. You can report the error or try again",
                           );
-                          showErrorDialog(otpProvider.errorMessage, context);
+                          AppErrorDialog.showErrorDialog(
+                            otpProvider.errorMessage,
+                            context,
+                          );
                         }
                       },
                     );

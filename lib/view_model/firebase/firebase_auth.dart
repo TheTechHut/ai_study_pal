@@ -2,11 +2,10 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:summarize_app/shared/functions/function_imports.dart';
 import 'package:summarize_app/shared/styles/app_colors.dart';
 import 'package:summarize_app/services/toast/toast_service.dart';
 import 'package:summarize_app/views/pages/home/homepage.dart';
-import 'package:summarize_app/views/pages/actions/mainpage.dart';
-import 'package:summarize_app/views/pages/onboarding/otp_view.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
@@ -72,7 +71,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
           "something went wrong, Please wait and try again later",
           color: AppColor.kGrayErrorColor,
         );
-        showErrorDialog(errorMessage, context);
+        AppErrorDialog.showErrorDialog(errorMessage, context);
         notifyListeners();
         return;
       }
@@ -81,7 +80,8 @@ class FirebaseAuthProvider extends ChangeNotifier {
         _verificationId = verificationId;
         _resendToken = forceResendingToken;
         _phoneNumber = phoneNumber;
-        launchOTPActivity(verificationId, phoneNumber, context, username);
+        AppOTPDialog.launchOTPActivity(
+            verificationId, phoneNumber, context, username);
         log("code sent");
         notifyListeners();
       }
@@ -109,29 +109,6 @@ class FirebaseAuthProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  launchOTPActivity(String verificationId, String phoneNumber,
-          BuildContext context, String username) =>
-      showModalBottomSheet(
-        isScrollControlled: true,
-        isDismissible: false,
-        context: context,
-        builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.all(16),
-              child: OTPView(
-                phoneNumber: phoneNumber,
-                username: username,
-              ),
-            ),
-          );
-        },
-      );
 
   Future<void> signInWithPhoneNumber(String verificationCode) async {
     try {

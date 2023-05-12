@@ -28,7 +28,7 @@ class SuggestImprovement {
                   ElevatedButton(
                     onPressed: () {
                       LaunchWhatsApp.launchWhatsApp(
-                        featureMessage: myFeature.text,
+                        message: myFeature.text,
                       );
                       Navigator.pop(context);
                     },

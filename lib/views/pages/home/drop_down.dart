@@ -4,7 +4,7 @@ import 'package:summarize_app/services/analytics/analytics_service.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
 import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
-import 'package:summarize_app/views/pages/actions/mainpage.dart';
+import 'package:summarize_app/views/pages/actions/action_nav.dart';
 
 class DropDown extends StatefulWidget {
   final bool isQuestion;
@@ -101,7 +101,6 @@ class _DropDownState extends State<DropDown> {
                   child: const Text('Summarize'),
                 ),
               )
-        //DropdownButton(items: , onChanged: (int items){pdfProvider.pdfDoc.pageAt(items)}),
       ],
     );
   }
