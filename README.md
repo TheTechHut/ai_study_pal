@@ -1,4 +1,4 @@
-# summarize_app
+# StudyPal
 
 This app aims to solve the problem of reading through long articles
 
