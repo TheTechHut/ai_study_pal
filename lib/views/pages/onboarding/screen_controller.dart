@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/pages/home/homepage.dart';
+import 'package:summarize_app/views/pages/mainpage/mainpage.dart';
 import 'package:summarize_app/views/pages/onboarding/onboarding.dart';
 import 'package:summarize_app/views/pages/splash/splash.dart';
 
@@ -22,9 +22,7 @@ class ScreenController extends StatelessWidget {
               return const Splash();
             }
             if (snapshot.hasData) {
-              return HomePage(
-                userName: authProvider.user.displayName!,
-              );
+              return const MainPage();
             } else {
               return const OnBoarding();
             }

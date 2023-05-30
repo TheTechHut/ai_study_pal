@@ -7,9 +7,9 @@ import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/views/pages/actions/quiz/questions_view.dart';
 import 'package:summarize_app/views/pages/actions/summarize/summary_view.dart';
 
-class MainPage extends StatelessWidget {
+class ActionMainPage extends StatelessWidget {
   final bool isQuestion;
-  const MainPage({
+  const ActionMainPage({
     super.key,
     required this.isQuestion,
   });

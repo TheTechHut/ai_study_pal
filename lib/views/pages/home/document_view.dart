@@ -8,37 +8,56 @@ class DocumentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PdfProvider>(builder: (context, pdfProvider, child) {
-      return Visibility(
-        visible: pdfProvider.pdfDoc != null,
-        child: Column(children: [
-          Text(
-            "Your document",
-            style: AppTextStyle.heading3,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            width: MediaQuery.of(context).size.width * 0.8,
-            constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width * 0.4,
-              minHeight: MediaQuery.of(context).size.width * 0.4,
-            ),
-            margin: const EdgeInsets.all(15),
-            padding: const EdgeInsets.all(15),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: SingleChildScrollView(
-                  child: Text(
-                    pdfProvider.myText,
-                    style: AppTextStyle.body6,
-                  ),
-                ),
+    return Consumer<PdfProvider>(
+      builder: (context, pdfProvider, child) {
+        return Visibility(
+          visible: pdfProvider.pdfDoc != null,
+          child: Column(
+            children: [
+              Text(
+                "Your document",
+                style: AppTextStyle.heading3,
               ),
-            ),
+              Stack(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                      minHeight: MediaQuery.of(context).size.width * 0.5,
+                    ),
+                    child: Card(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          pdfProvider.myText,
+                          style: AppTextStyle.body6,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: Icon(
+                      Icons.fullscreen,
+                      color: Colors.blue,
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
-        ]),
-      );
-    });
+        );
+      },
+    );
+  }
+
+  fullScreenView(bool isSelected) {
+    if (isSelected) {
+      //TODO enlarge screen
+    } else {
+      //TODO decrease size ==> Toggle button location
+    }
   }
 }

@@ -132,9 +132,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  HomePage(userName: widget.userName),
-                            ),
+                                builder: (context) => const HomePage()),
                           );
                         } else {
                           showToast(

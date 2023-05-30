@@ -11,6 +11,8 @@ import 'package:summarize_app/view_model/network_provider/summary_provider.dart'
 import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
 import 'package:summarize_app/views/pages/onboarding/screen_controller.dart';
 
+import 'views/providers/mainpage/mainpage_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -35,6 +37,7 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (_) => FirebaseAuthProvider()),
         ChangeNotifierProvider(create: (_) => QuestionsProvider()),
+        ChangeNotifierProvider(create: (_) => MainPageProvider()),
         // ChangeNotifierProvider.value(
         //   value: FirebaseAuthProvider.initialize(),
         // ),

@@ -12,56 +12,60 @@ class ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PdfProvider>(builder: (context, pdfProvider, _) {
-      return Visibility(
-        visible: pdfProvider.pdfDoc != null,
-        child: Container(
-          padding: const EdgeInsets.all(AppDimension.medium),
-          child: Column(
-            children: [
-              AppElevatedButton(
-                onPressed: () {
-                  if (pdfProvider.pdfDoc == null) {
-                    showToast("Please Upload a PDF");
-                  } else {
-                    AppDialog.openDialog(context, false);
-                  }
-                },
-                borderColor: AppColor.kPrimaryColor,
-                isLoading: false,
-                label: 'Summarize Page',
-              ),
-              const Spacing.meduimHeight(),
-              AppElevatedButton(
-                onPressed: () {
-                  if (pdfProvider.pdfDoc == null) {
-                    showToast("Please Upload a PDF");
-                  } else {
-                    AppDialog.openDialog(context, true);
-                  }
-                },
-                borderColor: AppColor.kPrimaryColor,
-                isLoading: false,
-                label: 'Generate Questions',
-              ),
-              const Spacing.meduimHeight(),
-              AppElevatedButton(
-                onPressed: () {
-                  showToast("What would you like the app to do?");
-                  if (!context.mounted) return;
-                  SuggestImprovement.suggestImprovement(
-                    context,
-                    myFeature,
-                  );
-                },
-                borderColor: AppColor.kPrimaryColor,
-                isLoading: false,
-                label: 'Suggest Improvement',
-              ),
-            ],
+    return Consumer<PdfProvider>(
+      builder: (context, pdfProvider, _) {
+        return Visibility(
+          visible: pdfProvider.pdfDoc != null,
+          child: Container(
+            padding: const EdgeInsets.all(AppDimension.medium),
+            child: Column(
+              children: [
+                AppElevatedButton.rounded(
+                  label: 'Summarize',
+                  onPressed: () {
+                    if (pdfProvider.pdfDoc == null) {
+                      showToast("Please Upload a PDF");
+                    } else {
+                      AppDialog.openDialog(context, false);
+                    }
+                  },
+                  borderColor: AppColor.kPrimaryColor,
+                  isLoading: false,
+                ),
+                const Spacing.meduimHeight(),
+                AppElevatedButton.rounded(
+                  label: 'Quiz me',
+                  onPressed: () {
+                    if (pdfProvider.pdfDoc == null) {
+                      showToast("Please Upload a PDF");
+                    } else {
+                      AppDialog.openDialog(context, true);
+                    }
+                  },
+                  borderColor: AppColor.kPrimaryColor,
+                  isLoading: false,
+                ),
+                const Spacing.meduimHeight(),
+
+                // TODO: Move this to settings page
+                AppElevatedButton.rounded(
+                  onPressed: () {
+                    showToast("What would you like the app to do?");
+                    if (!context.mounted) return;
+                    SuggestImprovement.suggestImprovement(
+                      context,
+                      myFeature,
+                    );
+                  },
+                  borderColor: AppColor.kPrimaryColor,
+                  isLoading: false,
+                  label: 'Suggest Improvement',
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

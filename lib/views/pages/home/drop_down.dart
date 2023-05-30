@@ -61,7 +61,7 @@ class _DropDownState extends State<DropDown> {
                           () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MainPage(
+                              builder: (context) => const ActionMainPage(
                                 isQuestion: true,
                               ),
                               settings:
@@ -88,7 +88,7 @@ class _DropDownState extends State<DropDown> {
                           () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MainPage(
+                              builder: (context) => const ActionMainPage(
                                 isQuestion: false,
                               ),
                               settings:

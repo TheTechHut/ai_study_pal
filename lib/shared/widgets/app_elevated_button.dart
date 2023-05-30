@@ -8,6 +8,7 @@ class AppElevatedButton extends StatelessWidget {
   final Color? textColor;
   final Color? buttonColor;
   final Color borderColor;
+  final double radius;
   const AppElevatedButton(
       {Key? key,
       this.onPressed,
@@ -15,9 +16,20 @@ class AppElevatedButton extends StatelessWidget {
       required this.isLoading,
       this.buttonColor,
       required this.borderColor,
-      this.textColor})
+      this.textColor,
+      this.radius = 0})
       : super(key: key);
 
+  const AppElevatedButton.rounded({
+    Key? key,
+    this.onPressed,
+    required this.label,
+    required this.isLoading,
+    this.buttonColor,
+    required this.borderColor,
+    this.textColor,
+    this.radius = 1000,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -35,9 +47,11 @@ class AppElevatedButton extends StatelessWidget {
         ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              AppDimension.small * 1.5,
-            ),
+            borderRadius: radius == 0
+                ? BorderRadius.circular(
+                    AppDimension.small * 1.5,
+                  )
+                : BorderRadius.circular(radius),
           ),
         ),
       ),

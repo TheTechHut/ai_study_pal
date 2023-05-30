@@ -109,9 +109,7 @@ class _OnBoardingState2 extends State<OnBoarding2> {
                                   if (context.mounted) return;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => HomePage(
-                                        userName: phoneAuthProvider.username,
-                                      ),
+                                      builder: (context) => const HomePage(),
                                     ),
                                   );
                                 }

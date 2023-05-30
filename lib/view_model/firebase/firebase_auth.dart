@@ -58,7 +58,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         _isloading = false;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => HomePage(userName: _username),
+            builder: (context) => const HomePage(),
           ),
         );
         notifyListeners();
