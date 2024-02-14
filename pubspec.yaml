@@ -56,6 +56,7 @@ flutter_native_splash:
   image: lib/res/img/m_logo_icon.png
 dev_dependencies:
   flutter_launcher_icons: ^0.12.0
+  
 
 
 

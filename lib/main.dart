@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:summarize_app/firebase_options.dart';
+import 'package:summarize_app/res/components/app_theme.dart';
 import 'package:summarize_app/services/analytics_service.dart';
 import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
 import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
@@ -42,20 +43,9 @@ void main() async {
       child: MaterialApp(
         home: const ScreenController(),
         navigatorObservers: [AnalyticsService.getObserver()],
-        theme: ThemeData(
-          primarySwatch: const MaterialColor(0XFF093E76, {
-            50: Colors.blueAccent,
-            100: Colors.black,
-            200: Colors.black,
-            300: Colors.black,
-            400: Colors.black,
-            500: Colors.black,
-            600: Colors.white,
-            700: Colors.black,
-            800: Colors.black,
-            900: Colors.black,
-          }),
-        ),
+        darkTheme: themeDark,
+        theme: themeLight,
+        themeMode: ThemeMode.system,
       ),
     ),
   );
