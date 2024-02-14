@@ -1,16 +1,16 @@
+import 'package:ai_study_pal/firebase_options.dart';
+import 'package:ai_study_pal/res/components/app_theme.dart';
+import 'package:ai_study_pal/services/analytics_service.dart';
+import 'package:ai_study_pal/view_model/firebase/firebase_auth.dart';
+import 'package:ai_study_pal/view_model/network_provider/questions_provider.dart';
+import 'package:ai_study_pal/view_model/network_provider/summary_provider.dart';
+import 'package:ai_study_pal/view_model/pdf_handler/pdf_provider.dart';
+import 'package:ai_study_pal/views/onboarding/screen_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/firebase_options.dart';
-import 'package:summarize_app/res/components/app_theme.dart';
-import 'package:summarize_app/services/analytics_service.dart';
-import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/view_model/network_provider/questions_provider.dart';
-import 'package:summarize_app/view_model/network_provider/summary_provider.dart';
-import 'package:summarize_app/view_model/pdf_handler/pdf_provider.dart';
-import 'package:summarize_app/views/onboarding/screen_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

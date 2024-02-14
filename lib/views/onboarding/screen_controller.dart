@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/core/homepage.dart';
-import 'package:summarize_app/views/onboarding/onboarding.dart';
-import 'package:summarize_app/views/splash/splash.dart';
+import 'package:ai_study_pal/view_model/firebase/firebase_auth.dart';
+import 'package:ai_study_pal/views/core/homepage.dart';
+import 'package:ai_study_pal/views/onboarding/onboarding.dart';
+import 'package:ai_study_pal/views/splash/splash.dart';
 
 class ScreenController extends StatelessWidget {
   const ScreenController({super.key});

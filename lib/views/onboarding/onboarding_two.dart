@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
-import 'package:summarize_app/services/toast_service.dart';
-import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/core/homepage.dart';
-import 'package:summarize_app/views/splash/splash.dart';
+import 'package:ai_study_pal/const/app_constant_imports.dart';
+import 'package:ai_study_pal/services/toast_service.dart';
+import 'package:ai_study_pal/view_model/firebase/firebase_auth.dart';
+import 'package:ai_study_pal/views/core/homepage.dart';
+import 'package:ai_study_pal/views/splash/splash.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnBoarding2 extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:summarize_app/services/network_enums.dart';
-import 'package:summarize_app/services/network_typedef.dart';
+import 'package:ai_study_pal/services/network_enums.dart';
+import 'package:ai_study_pal/services/network_typedef.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkHelper {

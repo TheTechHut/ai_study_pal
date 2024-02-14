@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.summarize_app">
+    package="co.thetechhut.aistudypal">
    <application
         android:label="Study Pal"
         android:name="${applicationName}"

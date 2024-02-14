@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:summarize_app/const/app_colors.dart';
+import 'package:ai_study_pal/const/app_colors.dart';
 
 class AppTextStyle {
   AppTextStyle._();

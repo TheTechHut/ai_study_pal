@@ -1,11 +1,11 @@
 import 'dart:developer';
+import 'package:ai_study_pal/const/api_url.dart';
+import 'package:ai_study_pal/model/summary_model.dart';
+import 'package:ai_study_pal/services/network_helper.dart';
+import 'package:ai_study_pal/services/network_service.dart';
+import 'package:ai_study_pal/services/toast_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/api_url.dart';
-import 'package:summarize_app/model/summary_model.dart';
-import 'package:summarize_app/services/network_helper.dart';
-import 'package:summarize_app/services/network_service.dart';
-import 'package:summarize_app/services/toast_service.dart';
 
 class SummaryProvider extends ChangeNotifier {
   SummaryModel result = SummaryModel();

@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
-import 'package:summarize_app/services/toast_service.dart';
-import 'package:summarize_app/view_model/firebase/firebase_auth.dart';
-import 'package:summarize_app/views/core/homepage.dart';
-import 'package:summarize_app/views/core/mainpage.dart';
+import 'package:ai_study_pal/const/app_constant_imports.dart';
+import 'package:ai_study_pal/services/toast_service.dart';
+import 'package:ai_study_pal/view_model/firebase/firebase_auth.dart';
+import 'package:ai_study_pal/views/core/homepage.dart';
+import 'package:ai_study_pal/views/core/mainpage.dart';
 
 class OTPView extends StatelessWidget {
   final String phoneNumber;

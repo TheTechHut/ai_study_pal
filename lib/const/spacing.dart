@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
+import 'package:ai_study_pal/const/app_constant_imports.dart';
 
 class Spacing extends StatelessWidget {
   final double height;

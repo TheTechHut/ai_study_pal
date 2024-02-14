@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/app_constant_imports.dart';
-import 'package:summarize_app/services/toast_service.dart';
-import 'package:summarize_app/views/onboarding/onboarding_two.dart';
+import 'package:ai_study_pal/const/app_constant_imports.dart';
+import 'package:ai_study_pal/services/toast_service.dart';
+import 'package:ai_study_pal/views/onboarding/onboarding_two.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnBoarding extends StatefulWidget {

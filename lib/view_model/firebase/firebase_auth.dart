@@ -2,11 +2,11 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:summarize_app/const/app_colors.dart';
-import 'package:summarize_app/services/toast_service.dart';
-import 'package:summarize_app/views/core/homepage.dart';
-import 'package:summarize_app/views/core/mainpage.dart';
-import 'package:summarize_app/views/onboarding/otp_view.dart';
+import 'package:ai_study_pal/const/app_colors.dart';
+import 'package:ai_study_pal/services/toast_service.dart';
+import 'package:ai_study_pal/views/core/homepage.dart';
+import 'package:ai_study_pal/views/core/mainpage.dart';
+import 'package:ai_study_pal/views/onboarding/otp_view.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
