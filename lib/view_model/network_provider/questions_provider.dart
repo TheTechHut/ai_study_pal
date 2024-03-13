@@ -15,7 +15,17 @@ class QuestionsProvider extends ChangeNotifier {
     final response = await NetworkService(
       body: {
         "model": AppUrl.model,
-        "prompt": "Generate 5 relevant questions from :$userInput",
+        "messages": [
+          {
+            "role": "system",
+            "content":
+                "You are AI Study pal, a helpful study buddy who helps students learn quickly by generating helpful questions and relevant quizzes"
+          },
+          {
+            "role": "user",
+            "content": "Generate 5 relevant questions from: $userInput"
+          }
+        ],
         "temperature": 0.7,
         "max_tokens": 64,
         "top_p": 1.0,

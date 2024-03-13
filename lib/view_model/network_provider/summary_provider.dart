@@ -15,8 +15,17 @@ class SummaryProvider extends ChangeNotifier {
     final response = await NetworkService(
       body: {
         "model": AppUrl.model,
-        "prompt":
-            "What are the key takeaways in the following article :$userInput",
+        "messages": [
+          {
+            "role": "system",
+            "content":
+                "You are AI Study pal, a helpful study buddy who helps students learn quickly by generating helpful summaries without degrading the meaning of the message"
+          },
+          {
+            "role": "user",
+            "content": "What are the key takeaway from this article: $userInput"
+          }
+        ],
         "temperature": 0.7,
         "max_tokens": 64,
         "top_p": 1.0,

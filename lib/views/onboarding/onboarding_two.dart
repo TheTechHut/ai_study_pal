@@ -110,7 +110,7 @@ class _OnBoardingState2 extends State<OnBoarding2> {
                                 if (phoneAuthProvider.errorMessage.isEmpty) {
                                   showToast("Success",
                                       color: AppColor.kSecondaryColor);
-                                  if (context.mounted) return;
+                                  if (!context.mounted) return;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => HomePage(
