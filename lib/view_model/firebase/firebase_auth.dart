@@ -29,8 +29,8 @@ class FirebaseAuthProvider extends ChangeNotifier {
   //getters
   Status get status => _status;
   bool get isloading => _isloading;
-  User get user => _auth.currentUser!;
-  String get username => user.displayName!;
+  User? get user => _auth.currentUser;
+  String? get username => user!.displayName;
   String get errorMessage => _errorMessage;
   String get phoneNumber => _phoneNumber;
   Stream<User?> get authState => _auth.authStateChanges();

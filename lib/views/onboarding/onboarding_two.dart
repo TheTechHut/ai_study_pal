@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:ai_study_pal/views/core/homepage.dart';
+import 'package:ai_study_pal/views/onboarding/otp_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_study_pal/const/app_constant_imports.dart';
 import 'package:ai_study_pal/services/toast_service.dart';
 import 'package:ai_study_pal/view_model/firebase/firebase_auth.dart';
-import 'package:ai_study_pal/views/core/homepage.dart';
+// import 'package:ai_study_pal/views/core/homepage.dart';
 import 'package:ai_study_pal/views/splash/splash.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -107,15 +109,15 @@ class _OnBoardingState2 extends State<OnBoarding2> {
                                       phoneAuthProvider.errorMessage);
                                 }
 
-                                if (phoneAuthProvider.errorMessage.isEmpty) {
+                                if (phoneAuthProvider.errorMessage.isEmpty &&
+                                    phoneAuthProvider.user != null) {
                                   showToast("Success",
                                       color: AppColor.kSecondaryColor);
                                   if (!context.mounted) return;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => HomePage(
-                                        userName: phoneAuthProvider.username,
-                                      ),
+                                      builder: (context) =>
+                                          HomePage(userName: userName.text),
                                     ),
                                   );
                                 }
